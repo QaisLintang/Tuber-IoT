@@ -1,0 +1,60 @@
+<!-- predict_temperature.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Temperature</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body>
+
+    <header></header>
+
+    <main>
+        <div class="form-container">
+            <div class="form-body">
+                <form>
+                    <div class="form-input-container">
+                        <label for="heartrate" class="form-label">Heartrate:</label>
+                        <input type="text" id="heartrate-value" class="form-input" value="--" disabled>
+                    </div>
+                    <div class="form-input-container">
+                        <label for="spO2" class="form-label">spO2:</label>
+                        <input type="text" id="spO2-value" class="form-input" value= "--" disabled>
+                    </div>
+                    <div class="form-input-container">
+                        <label for="Prediksi" class="form-label">Hipoksia:</label>
+                        <input type="text" id="classification-value" class="form-input" value="--" disabled>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+            socket.on('status_hipoksia_update', function (data) {
+                document.getElementById('heartrate-value').value = data.heartrate;
+                document.getElementById('spO2-value').value = data.spO2;
+                document.getElementById('classification-value').value = data.classification
+            });
+
+            socket.on('status_update', function (data) {
+                // Update nilai suhu di halaman web
+                document.getElementById('heartrate-value').value = data.heartrate;
+                document.getElementById('spO2-value').value = data.spO2;
+            });
+        </script>
+        </div>
+    </main>
+
+ <footer></footer>
+
+</body>
+
+</html>
